@@ -21,7 +21,7 @@ set ylabel "u"
 
 title = "Амплитуда u(x, t)"
 
-set output "files/animate_cont.gif"
+set output "animate_cont.gif"
 
 do for [i = 0:299]{
     plot_cont = sprintf("files/data/cont_out%d.txt", i)
