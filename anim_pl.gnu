@@ -19,13 +19,18 @@ set title "Решение непрерывной модели"
 set xlabel "x"
 set ylabel "u"
 
-title = "Амплитуда u(x, t)"
+plot_cont = "files/cont_out.txt"
+title_cont = "Амплитуда u(x, t)"
 
 set output "animate_cont.gif"
 
+#do for [i = 0:299]{
+#    plot_cont = sprintf("files/data/cont_out%d.txt", i)
+#    plot plot_cont u 1:2 title title lc rgb "red"
+#}
+
 do for [i = 0:299]{
-    plot_cont = sprintf("files/data/cont_out%d.txt", i)
-    plot plot_cont u 1:2 title title lc rgb "red"
+    plot plot_cont u 1:i title title_cont lc rgb "red"
 }
 
 unset out

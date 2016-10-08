@@ -3,34 +3,46 @@
 
 #define PI 3.14159265
 
-#define PROP_A 9.0 //4.0
+#define PROP_A 20.0
 #define ATT_LOC1 0
 #define ATT_LOC2 3.0
-#define LEN ( ATT_LOC2 - ATT_LOC1 )
+#define XLEN ( ATT_LOC2 - ATT_LOC1 )
+#define TIME_LOC1 0
+#define TIME_LOC2 3.0
+#define TLEN ( TIME_LOC2 - TIME_LOC1 )
 
 #define TERMS_NUM 10
-#define DOTS_NUM 300
-#define DX ( LEN / DOTS_NUM )
+
+#define XDOTS_NUM 300
+#define DX ( XLEN / (XDOTS_NUM - 1) )
+#define TDOTS_NUM 300
+#define DT ( TLEN / (TDOTS_NUM - 1) )
 
 double phi(double, double);
 double ksi(double, double);
 double integration(double, double, double, double(*f)(double, double));
-void continuous_model(double*, double);
-int write(double*, char*, double);
+//void continuous_model(double*, double);
+void continuous_model(double u[XDOTS_NUM][TDOTS_NUM]);
+//int write(double*, char*, double);
+int write(double u[XDOTS_NUM][TDOTS_NUM], char*);
 
 int main()
 {
     int i = 0;
-    double u[DOTS_NUM];
-    double t = 0;
+    double u[XDOTS_NUM][TDOTS_NUM];
 
-    for(t = 0; t <= 3; t += 0.01)
-    {
-        continuous_model(u, t);
-        if(write(u, "cont", i) == 1)
-            return 1;
-        i++;
-    }
+    continuous_model(u);
+    write(u, "cont");
+
+    //double t = 0;
+
+    // for(t = 0; t <= 3; t += 0.01)
+    // {
+    //     continuous_model(u, t);
+    //     if(write(u, "cont", i) == 1)
+    //         return 1;
+    //     i++;
+    // }
 
     return 0;
 }
@@ -39,31 +51,31 @@ double phi(double x, double k)
 {
     double Y;
 
-    // if(x >= 0 && x <= LEN / 2)
+    // if(x >= 0 && x <= XLEN / 2)
     //     Y = 0.2 * x;
-    // else if(x >= LEN / 2 && x <= LEN)
-    //     Y = -0.2 * (x - LEN);
+    // else if(x >= XLEN / 2 && x <= XLEN)
+    //     Y = -0.2 * (x - XLEN);
     // else
     // {
     //     printf("Error in phi!\n");
     //     return 0;
     // }
 
-    Y = 2 * sin(PI * x / LEN);
+    Y = 2 * sin(PI * x / XLEN);
 
-    return Y * sin(k * PI * x / LEN);
+    return Y * sin(k * PI * x / XLEN);
 }
 
 double ksi(double x, double k)
 {
     double Y = 3;
 
-    // if(x >= LEN/3 && x <= 2.0*LEN/3)
-    //     Y = 10.0;
-    // else
-    //     Y = 0;
+    if(x >= XLEN/3 && x <= 2.0*XLEN/3)
+        Y = 10.0;
+    else
+        Y = 0;
 
-    return Y * sin(k * PI * x / LEN);
+    return Y * sin(k * PI * x / XLEN);
 }
 
 double integration(double a, double b, double k, double(*f)(double, double))
@@ -88,34 +100,83 @@ double integration(double a, double b, double k, double(*f)(double, double))
     return Y;
 }
 
-void continuous_model(double *u, double t)
+// void continuous_model(double *u, double t)
+// {
+//     int i;
+//     double x, a, b, k;
+//
+//     for(i = 0; i < XDOTS_NUM; i++)
+//     {
+//         u[i] = 0;
+//         x = i * DX;
+//         for(k = 1; k < TERMS_NUM; k++)
+//         {
+//             a = (2.0 / XLEN) * integration(ATT_LOC1, ATT_LOC2, k, phi);
+//             b = (2.0 / (k * PI * PROP_A)) * integration(ATT_LOC1, ATT_LOC2, k, ksi);
+//             // printf("%f %f\n", a, b);
+//
+//             u[i] += (a * cos(k * PI * PROP_A * t / XLEN) + b * sin(k * PI * PROP_A * t / XLEN)) * sin(k * PI * x / XLEN);
+//         }
+//     }
+// }
+
+void continuous_model(double u[XDOTS_NUM][TDOTS_NUM])
 {
-    int i;
-    double x, a, b, k;
+    int i, j;
+    double x, a, b, k, t;
 
-    for(i = 0; i < DOTS_NUM; i++)
+    for(j = 0; j < TDOTS_NUM; j++)
     {
-        u[i] = 0;
-        x = i * DX;
-        for(k = 1; k < TERMS_NUM; k++)
-        {
-            a = (2.0 / LEN) * integration(ATT_LOC1, ATT_LOC2, k, phi);
-            b = (2.0 / (k * PI * PROP_A)) * integration(ATT_LOC1, ATT_LOC2, k, ksi);
-            // printf("%f %f\n", a, b);
+        t = TIME_LOC1 + DT*j;
 
-            u[i] += (a * cos(k * PI * PROP_A * t / LEN) + b * sin(k * PI * PROP_A * t / LEN)) * sin(k * PI * x / LEN);
+        for(i = 0; i < XDOTS_NUM; i++)
+        {
+            u[i][j] = 0;
+            x = i * DX;
+            for(k = 1; k < TERMS_NUM; k++)
+            {
+                a = (2.0 / XLEN) * integration(ATT_LOC1, ATT_LOC2, k, phi);
+                b = (2.0 / (k * PI * PROP_A)) * integration(ATT_LOC1, ATT_LOC2, k, ksi);
+                // printf("%f %f\n", a, b);
+
+                u[i][j] += (a * cos(k * PI * PROP_A * t / XLEN) + b * sin(k * PI * PROP_A * t / XLEN)) * sin(k * PI * x / XLEN);
+            }
         }
     }
 }
 
-int write(double *u, char *str, double num)
+// int write(double *u, char *str, double num)
+// {
+//     int i;
+//     double x;
+//     char filename[50];
+//     FILE *out;
+//
+//     sprintf(filename, "files/data/%s_out%.0f.txt", str, num);
+//
+//     if( (out = fopen(filename, "w")) == NULL )
+//     {
+//         printf("Opening file error!");
+//         return 1;
+//     }
+//
+//     for(i = 0; i < XDOTS_NUM; i++)
+//     {
+//         x = DX * i;
+//         fprintf(out, "%.3f %.3f\n", x, u[i]);
+//     }
+//
+//     fclose(out);
+//     return 0;
+// }
+
+int write(double u[XDOTS_NUM][TDOTS_NUM], char *str)
 {
-    int i;
-    double x;
+    int i, j;
     char filename[50];
     FILE *out;
 
-    sprintf(filename, "files/data/%s_out%.0f.txt", str, num);
+    sprintf(filename, "files/%s_out.txt", str);
 
     if( (out = fopen(filename, "w")) == NULL )
     {
@@ -123,10 +184,12 @@ int write(double *u, char *str, double num)
         return 1;
     }
 
-    for(i = 0; i < DOTS_NUM; i++)
+    for(i = 0; i < XDOTS_NUM; i++)
     {
-        x = DX * i;
-        fprintf(out, "%.3f %.3f\n", x, u[i]);
+        fprintf(out, "%6.2f", DX * i);
+        for(j = 0; j < TDOTS_NUM; j++)
+            fprintf(out, "%6.2f", u[i][j]);
+        fprintf(out, "\n");
     }
 
     fclose(out);
