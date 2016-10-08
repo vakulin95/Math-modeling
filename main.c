@@ -25,17 +25,17 @@ double ksi_s(double, double);
 double integration(double, double, double, double(*f)(double, double));
 void continuous_model(double u[XDOTS_NUM][TDOTS_NUM]);
 int discrete_model(double u[XDOTS_NUM][TDOTS_NUM]);
-int write(double u[XDOTS_NUM][TDOTS_NUM], char*, int);
+int write(double u[XDOTS_NUM][TDOTS_NUM], char*);
 
 int main()
 {
     double u[XDOTS_NUM][TDOTS_NUM];
 
-    if((discrete_model(u) != 0) || (write(u, "discr", 1000)))
+    if((discrete_model(u) != 0) || (write(u, "discr")))
         return 0;
 
     continuous_model(u);
-    write(u, "cont", 1000);
+    write(u, "cont");
 
     return 0;
 }
@@ -129,6 +129,8 @@ void continuous_model(double u[XDOTS_NUM][TDOTS_NUM])
     int i, j;
     double x, a, b, k, t;
 
+    printf("Calculation of the continuous model...\n");
+
     for(j = 0; j < TDOTS_NUM; j++)
     {
         t = TIME_LOC1 + DT*j;
@@ -160,6 +162,8 @@ int discrete_model(double u[XDOTS_NUM][TDOTS_NUM])
         return 1;
     }
 
+    printf("Calculation of the discrete model...\n");
+
     for(i = 0; i < XDOTS_NUM; i++)
     {
         x = i * DX;
@@ -179,17 +183,11 @@ int discrete_model(double u[XDOTS_NUM][TDOTS_NUM])
     return 0;
 }
 
-int write(double u[XDOTS_NUM][TDOTS_NUM], char *str, int time_top)
+int write(double u[XDOTS_NUM][TDOTS_NUM], char *str)
 {
     int i, j;
     char filename[50];
     FILE *out;
-
-    if(time_top > TDOTS_NUM)
-    {
-        printf("Error in func write!\nTry time_top <= %d\n", TDOTS_NUM);
-        return 2;
-    }
 
     sprintf(filename, "files/%s_out.txt", str);
 
@@ -199,10 +197,12 @@ int write(double u[XDOTS_NUM][TDOTS_NUM], char *str, int time_top)
         return 1;
     }
 
+    printf("Filing \"%s\"...\n", filename);
+
     for(i = 0; i < XDOTS_NUM; i++)
     {
         fprintf(out, "%7.3f", DX * i);
-        for(j = 0; j < time_top; j++)
+        for(j = 0; j < TDOTS_NUM; j++)
             fprintf(out, "%7.3f", u[i][j]);
         fprintf(out, "\n");
     }

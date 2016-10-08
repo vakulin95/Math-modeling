@@ -1,23 +1,25 @@
 set terminal pdfcairo
+set xrange [0 : 1]
+set yrange[-5 : 5]
+set xzeroaxis
+set style data lines
 set grid
 set xtics auto
 set ytics auto
 set mxtics
 set mytics
-set style data lines
-set key outside bottom right box
+
+set title "Малые поперечные колебания струны с закрепленными концами"
+set xlabel "x"
+set ylabel "u(x, t)"
 
 plot_cont = "files/cont_out.txt"
+plot_discr = "files/discr_out.txt"
+title_cont = "Решение непрерывной модели"
+title_discr = "Решение дискретной модели"
 
-title = "u(x)"
+set output "out.pdf"
 
-set output "files/String_cont.pdf"
-
-	set title "Решение непрерывной модели"
-	set xlabel "x"
-	set ylabel "u"
-	plot plot_cont u 1:2 title title lc rgb "red"
+	plot plot_cont u 1:270 title title_cont lc rgb "red" , plot_discr u 1:270 title title_discr lc rgb "blue"
 
 unset out
-
-set terminal qt
