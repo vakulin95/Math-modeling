@@ -25,18 +25,10 @@ plot_discr = "files/discr_out.txt"
 title_cont = "Решение непрерывной модели"
 title_discr = "Решение дискретной модели"
 
-set output "animate_out.gif"
+set output "files/animate_out.gif"
 
 do for [i = 0:999]{
     plot plot_cont u 1:i title title_cont lc rgb "red" , plot_discr u 1:i title title_discr lc rgb "blue"
 }
-
-unset out
-
-set terminal pdfcairo
-
-set output "out.pdf"
-
-	plot plot_cont u 1:500 title title_cont lc rgb "red" , plot_discr u 1:500 title title_discr lc rgb "blue"
 
 unset out

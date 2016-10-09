@@ -18,7 +18,7 @@ plot_discr = "files/discr_out.txt"
 title_cont = "Решение непрерывной модели"
 title_discr = "Решение дискретной модели"
 
-set output "out.pdf"
+set output "files/out.pdf"
 
 	plot plot_cont u 1:270 title title_cont lc rgb "red" , plot_discr u 1:270 title title_discr lc rgb "blue"
 
