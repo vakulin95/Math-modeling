@@ -3,11 +3,12 @@ set xtics auto
 set ytics auto
 set mxtics
 set mytics
-set style line 1 lc rgb 'red' pt 7 ps 0.3
+set grid
+set style line 1 lc rgb 'red' pt 7 ps 1
 
-plot_file = "output.dat"
+plot_file = "files/output.dat"
 
-set output "pl_out.png"
+set output "files/pl_out.png"
 
     set title ""
 	set xlabel "r"
