@@ -1,20 +1,21 @@
 #include <stdio.h>
 #include <math.h>
 
-#define DOTS_NUM1 1000
-#define DOTS_NUM2 100
+#define DOTS_NUM1 10000
+#define DOTS_NUM2 1000
 #define X0 0.5
-#define EPS 0.01
+#define EPS 0.001
 
 #define X_LOC1 0
 #define X_LOC2 1.0
 
-#define R_LOC1 0.7
-#define R_LOC2 0.8
-#define DR 0.001 //(R_LOC2 - R_LOC1) / (DOTS_NUM2 + 1)
+#define R_LOC1 0
+#define R_LOC2 1.0
+#define DR 0.0001
+#define R_DOTS_NUM (int)((R_LOC2 - R_LOC1) / DR)
 
 int solve(void);
-float clac_del();
+int calc_delta(float*, int);
 
 int main()
 {
@@ -25,18 +26,21 @@ int main()
 
 int solve(void)
 {
-    int i, j;
+    int i, j, k, m, fl, kmax, r;
     float Xp, Xn, R, temp;
+    float X[DOTS_NUM2], Rmas[R_DOTS_NUM];
 
     FILE *out;
 
     if(!(out = fopen("files/output.dat", "w")))
     {
-        printf("File opening ERROR!\n");
+        printf("File opening ERROR in solve()!\n");
         return 1;
     }
 
-    temp = X0;
+    fl = 0;
+    r = 0;
+    kmax = 1;
     for(R = R_LOC1, i = 0; R < R_LOC2; R += DR, i++)
     {
         Xp = X0;
@@ -46,21 +50,87 @@ int solve(void)
             Xp = Xn;
         }
 
-
-        for(j = 1; j < DOTS_NUM2; j++)
+        fl = 0;
+        temp = Xp;
+        X[0] = Xn;
+        for(j = 1, k = 1; j < DOTS_NUM2; j++)
         {
             Xn = 4 * R * Xp * (1 - Xp);
-            //fprintf(out, "%f\n", Xn - temp);
             if(fabsf(Xn - temp) > EPS)
             {
-                fprintf(out, "%.3f %.3f\n", R, Xn);
+                // Repetition control
+                for(m = 0; m < k; m++)
+                {
+                    if(fabs(Xn - X[m]) < 0.001)
+                    {
+                        fl = 1;
+                        break;
+                    }
+                }
+
+                if(!fl)
+                {
+                    X[k] = Xn;
+                    k++;
+                }
+                else
+                    fl = 0;
+
                 temp = Xn;
             }
             Xp = Xn;
         }
-        //fprintf(out, "\n");
+
+        // Writing "X" values for current "R"
+        for(m = 0; m < k; m++)
+            fprintf(out, "%.4f %.4f\n", R, X[m]);
+        fprintf(out, "\n");
+
+        // "k" changing control
+        if(k > kmax && !(k % 2))
+        {
+            //printf("%d\n", k);
+            Rmas[r] = R - DR;
+            r++;
+            kmax = k;
+        }
+        else if(k < kmax)
+            kmax = k;
     }
 
+    // Delta calculation
+    calc_delta(Rmas, 10);
+
     fclose(out);
+    return 0;
+}
+
+int calc_delta(float *R, int N)
+{
+    int i;
+    float delta;
+
+    FILE *out_r;
+
+    if(N < 3)
+    {
+        printf("ERROR in calc_del() func!\n Mass R too small\n");
+        return 1;
+    }
+
+    if(!(out_r = fopen("out_r.dat", "w")))
+    {
+        printf("File opening ERROR in clac_delta()!\n");
+        return -1;
+    }
+
+    for(i = 0; i < N - 2; i++)
+    {
+        delta = (R[i + 1] - R[i]) / (R[i + 2] - R[i + 1]);
+        fprintf(out_r, "%f\n", delta);
+        printf("R[%d]\t%f\tdelta\t%f\n", i,  R[i], delta);
+    }
+
+    fclose(out_r);
     return 0;
 }

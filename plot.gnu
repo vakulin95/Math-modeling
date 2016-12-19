@@ -4,7 +4,7 @@ set ytics auto
 set mxtics
 set mytics
 set grid
-set style line 1 lc rgb 'red' pt 7 ps 1
+set style line 1 lc rgb 'red' pt 7 ps 0.3
 
 plot_file = "files/output.dat"
 
