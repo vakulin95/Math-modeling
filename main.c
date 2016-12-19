@@ -11,15 +11,20 @@
 
 #define R_LOC1 0
 #define R_LOC2 1.0
-#define DR 0.0001
+#define DR 0.00001
 #define R_DOTS_NUM (int)((R_LOC2 - R_LOC1) / DR)
+
+#define NUM_OF_DELTAS 7
 
 int solve(void);
 int calc_delta(float*, int);
+int deg_of_2(int);
 
 int main()
 {
+    printf("\n----------------DYNAMIC CHAOS----------------\n");
     solve();
+    printf("\n---------------------------------------------\n");
 
     return 0;
 }
@@ -87,10 +92,10 @@ int solve(void)
         fprintf(out, "\n");
 
         // "k" changing control
-        if(k > kmax && !(k % 2))
+        if(k > kmax && !(k % 2) && deg_of_2(k))
         {
             //printf("%d\n", k);
-            Rmas[r] = R - DR;
+            Rmas[r] = R;
             r++;
             kmax = k;
         }
@@ -99,7 +104,8 @@ int solve(void)
     }
 
     // Delta calculation
-    calc_delta(Rmas, 10);
+    if(calc_delta(Rmas, NUM_OF_DELTAS))
+        return -1;
 
     fclose(out);
     return 0;
@@ -118,7 +124,7 @@ int calc_delta(float *R, int N)
         return 1;
     }
 
-    if(!(out_r = fopen("out_r.dat", "w")))
+    if(!(out_r = fopen("files/out_r.dat", "w")))
     {
         printf("File opening ERROR in clac_delta()!\n");
         return -1;
@@ -127,10 +133,15 @@ int calc_delta(float *R, int N)
     for(i = 0; i < N - 2; i++)
     {
         delta = (R[i + 1] - R[i]) / (R[i + 2] - R[i + 1]);
-        fprintf(out_r, "%f\n", delta);
+        fprintf(out_r, "R[%d]\t%f\tdelta\t%f\n", i,  R[i], delta);
         printf("R[%d]\t%f\tdelta\t%f\n", i,  R[i], delta);
     }
 
     fclose(out_r);
     return 0;
+}
+
+int deg_of_2(int x)
+{
+    return (x <= 0) ? 0 : (x & (x-1)) == 0;
 }
