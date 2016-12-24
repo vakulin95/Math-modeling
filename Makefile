@@ -13,7 +13,7 @@ run:
 	@./main.out
 
 plot:
-	@gnuplot "plot.gnu"
+	gnuplot "plot.gnu"
 
 clean:
 	@rm -rf *.out *.o

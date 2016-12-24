@@ -17,4 +17,4 @@ set yrange [-1:]
 set grid
 set palette model CMY rgbformulae 7,5,15
 
-plot "files/out.dat" matrix with image
+plot "files/result_out.dat" matrix with image
