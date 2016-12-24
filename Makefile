@@ -1,7 +1,7 @@
 CFLAGS = -c -Wall
 LFLAGS = -lm -o
 
-all: built run clean
+all: built run clean plot
 
 built: main.o
 	@gcc main.o $(LFLAGS) main.out

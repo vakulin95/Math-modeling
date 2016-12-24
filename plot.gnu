@@ -1,6 +1,6 @@
 set term pngcairo enhanced size 1024,768 font "CMU Serif, 12"
 
-set out "matrix.png"
+set out "files/pl_out.png"
 
 set title "Percollation theory model" font "CMU Serif, 20"
 
@@ -17,4 +17,4 @@ set yrange [-1:]
 set grid
 set palette model CMY rgbformulae 7,5,15
 
-plot "data.dat" matrix with image
+plot "files/out.dat" matrix with image
