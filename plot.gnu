@@ -1,4 +1,4 @@
-set term pngcairo enhanced size 1024,768 font "CMU Serif, 12"
+set term pngcairo enhanced size 2048,1536 font "CMU Serif, 12"
 
 set out "files/pl_out.png"
 
@@ -11,10 +11,8 @@ set size square
 set xrange [-1:]
 set yrange [-1:]
 
-# set palette defined ( 0 0 0 0, 1 1 1 1 )
-# set palette rgb 23,28,3
-# set pal def (0 "grey", 1 "black")
 set grid
-set palette model CMY rgbformulae 7,5,15
+set palette model RGB
+set palette defined
 
 plot "files/result_out.dat" matrix with image
