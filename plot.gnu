@@ -20,6 +20,6 @@ set output "files/pl_out.png"
 	set ylabel "Y"
     set view 80, 30
 
-    splot plot_file u 1:2:3 ls 1 title "" #with lines
+    splot plot_file u 1:2:3 ls 1 title ""
 
 unset out

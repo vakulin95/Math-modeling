@@ -18,62 +18,15 @@
 #define DEFAULT_TN  (1e+6)
 #define DOTS_NUM    (1e+10)
 
-int func(double t, const double y[], double f[], void *params)
-{
-    (void)(t); /* avoid unused parameter warning */
-
-    double teta = ((double *)params)[0];
-    double r = ((double *)params)[1];
-    double b = ((double *)params)[2];
-
-    /*  x = y[0]
-        y = y[1]
-        z = y[2]
-    */
-
-    f[0] = -teta * y[0] + teta * y[1];
-    f[1] = -y[0] * y[2] + r * y[0] - y[1];
-    f[2] = y[0] * y[1] - b * y[2];
-
-    return GSL_SUCCESS;
-}
-
-int jac(double t, const double y[], double *dfdy, double dfdt[], void *params)
-{
-    (void)(t); /* avoid unused parameter warning */
-
-    double teta = ((double *)params)[0];
-    double r = ((double *)params)[1];
-    double b = ((double *)params)[2];
-
-    gsl_matrix_view dfdy_mat = gsl_matrix_view_array (dfdy, 3, 3);
-    gsl_matrix *jacobi = &dfdy_mat.matrix;
-
-    gsl_matrix_set (jacobi, 0, 0, -teta);
-    gsl_matrix_set (jacobi, 0, 1, teta);
-    gsl_matrix_set (jacobi, 0, 2, 0.0);
-
-    gsl_matrix_set (jacobi, 1, 0, -y[2] + r);
-    gsl_matrix_set (jacobi, 1, 1, -1.0);
-    gsl_matrix_set (jacobi, 1, 2, -y[0]);
-
-    gsl_matrix_set (jacobi, 2, 0, y[1]);
-    gsl_matrix_set (jacobi, 2, 1, y[0]);
-    gsl_matrix_set (jacobi, 2, 2, -b);
-
-    dfdt[0] = 0.0;
-    dfdt[1] = 0.0;
-
-    return GSL_SUCCESS;
-}
+int func(double t, const double y[], double f[], void *params);
+int jac(double t, const double y[], double *dfdy, double dfdt[], void *params);
 
 int main(void)
 {
-    int i;
-    int status;
+    int i, status;
 
-    double t = DEFAULT_T0;
     double ti;
+    double t = DEFAULT_T0;
     double y[3]   = {
                         INIT_X,
                         INIT_Y,
@@ -112,15 +65,64 @@ int main(void)
 
         if (status != GSL_SUCCESS)
         {
-            printf ("error, return value=%d\n", status);
+            printf ("error, return value = %d\n", status);
             break;
         }
 
-        //fprintf(out, "%.5lf %.5lf %.5lf %.5lf\n", t, y[0], y[1], y[2]);
         fprintf(out, "%.5lf %.5lf %.5lf\n", y[0], y[1], y[2]);
     }
 
     gsl_odeiv2_driver_free (driver);
 
     return 0;
+}
+
+int func(double t, const double y[], double f[], void *params)
+{
+    (void)(t);
+
+    double teta = ((double *)params)[0];
+    double r = ((double *)params)[1];
+    double b = ((double *)params)[2];
+
+    /*
+        x = y[0]
+        y = y[1]
+        z = y[2]
+    */
+
+    f[0] = -teta * y[0] + teta * y[1];
+    f[1] = -y[0] * y[2] + r * y[0] - y[1];
+    f[2] = y[0] * y[1] - b * y[2];
+
+    return GSL_SUCCESS;
+}
+
+int jac(double t, const double y[], double *dfdy, double dfdt[], void *params)
+{
+    (void)(t);
+
+    double teta = ((double *)params)[0];
+    double r = ((double *)params)[1];
+    double b = ((double *)params)[2];
+
+    gsl_matrix_view dfdy_mat = gsl_matrix_view_array (dfdy, 3, 3);
+    gsl_matrix *jacobi = &dfdy_mat.matrix;
+
+    gsl_matrix_set (jacobi, 0, 0, -teta);
+    gsl_matrix_set (jacobi, 0, 1, teta);
+    gsl_matrix_set (jacobi, 0, 2, 0.0);
+
+    gsl_matrix_set (jacobi, 1, 0, -y[2] + r);
+    gsl_matrix_set (jacobi, 1, 1, -1.0);
+    gsl_matrix_set (jacobi, 1, 2, -y[0]);
+
+    gsl_matrix_set (jacobi, 2, 0, y[1]);
+    gsl_matrix_set (jacobi, 2, 1, y[0]);
+    gsl_matrix_set (jacobi, 2, 2, -b);
+
+    dfdt[0] = 0.0;
+    dfdt[1] = 0.0;
+
+    return GSL_SUCCESS;
 }
