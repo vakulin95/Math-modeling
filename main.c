@@ -8,11 +8,15 @@
 #define R_PROP      (28.0)
 #define B_PROP      (8.0 / 3.0)
 
-#define STEP        (1e-6)
+#define STEP        (1e-10)
 
 #define INIT_X      (10.0)
-#define INIT_Y      (0.0)
-#define INIT_Z      (0.0)
+#define INIT_Y      (10.0)
+#define INIT_Z      (10.0)
+
+#define DEFAULT_T0  (0.0)
+#define DEFAULT_TN  (1e+6)
+#define DOTS_NUM    (1e+10)
 
 int func(double t, const double y[], double f[], void *params)
 {
@@ -68,15 +72,22 @@ int main(void)
     int i;
     int status;
 
-    double t = 0.0, t1 = 100.0, ti;
-
+    double t = DEFAULT_T0;
+    double ti;
     double y[3]   = {
                         INIT_X,
                         INIT_Y,
                         INIT_Z
                     };
-
     double params[3];
+
+    FILE *out;
+
+    if(!(out = fopen("files/out.dat", "w")))
+    {
+        printf("ERROR! Output stream.\n");
+        return -1;
+    }
 
     params[0] = TETA_PROP;
     params[1] = R_PROP;
@@ -93,9 +104,10 @@ int main(void)
 
     driver = gsl_odeiv2_driver_alloc_y_new(&ode_system, gsl_odeiv2_step_rk8pd, STEP, 1e-6, 0.0);
 
-    for (i = 1; i <= 100; i++)
+    for (i = DEFAULT_T0; i < DEFAULT_TN; i++)
     {
-        ti = i * t1 / 100.0;
+        ti = i * (DEFAULT_TN - DEFAULT_T0) / DOTS_NUM;
+
         status = gsl_odeiv2_driver_apply (driver, &t, ti, y);
 
         if (status != GSL_SUCCESS)
@@ -104,7 +116,8 @@ int main(void)
             break;
         }
 
-        printf ("%.5lf %.5lf %.5lf %.5lf\n", t, y[0], y[1], y[2]);
+        //fprintf(out, "%.5lf %.5lf %.5lf %.5lf\n", t, y[0], y[1], y[2]);
+        fprintf(out, "%.5lf %.5lf %.5lf\n", y[0], y[1], y[2]);
     }
 
     gsl_odeiv2_driver_free (driver);

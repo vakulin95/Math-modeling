@@ -2,16 +2,19 @@ CFLAGS = -c -Wall -I/usr/local/include
 GSLFLAGS = -L/usr/local/lib
 LFLAGS = -lgsl -lgslcblas -lm
 
-all: built run clean
+all: built run plot clean
 
 built: main.o
-	gcc $(GSLFLAGS) main.o $(LFLAGS)
+	@gcc $(GSLFLAGS) main.o $(LFLAGS)
 
 main.o: main.c
-	gcc $(CFLAGS) main.c
+	@gcc $(CFLAGS) main.c
 
 run:
-	./a.out
+	@./a.out
+
+plot:
+	@gnuplot "plot.gnu"
 
 clean:
 	@rm -rf *.out *.o
