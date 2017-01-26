@@ -1,20 +1,20 @@
 #include <stdio.h>
 #include <math.h>
 
-#define DOTS_NUM1 10000
-#define DOTS_NUM2 1000
-#define X0 0.5
-#define EPS 0.001
+#define DOTS_NUM1       10000
+#define DOTS_NUM2       1000
+#define X0              0.5
+#define EPS             0.001
 
-#define X_LOC1 0
-#define X_LOC2 1.0
+#define X_LOC1          0
+#define X_LOC2          1.0
 
-#define R_LOC1 0
-#define R_LOC2 1.0
-#define DR 0.00001
-#define R_DOTS_NUM (int)((R_LOC2 - R_LOC1) / DR)
+#define R_LOC1          0
+#define R_LOC2          1.0
+#define DR              0.00001
+#define R_DOTS_NUM      (int)((R_LOC2 - R_LOC1) / DR)
 
-#define NUM_OF_DELTAS 7
+#define NUM_OF_DELTAS   7
 
 int solve(void);
 int calc_delta(float*, int);
@@ -94,7 +94,6 @@ int solve(void)
         // "k" changing control
         if(k > kmax && !(k % 2) && deg_of_2(k))
         {
-            //printf("%d\n", k);
             Rmas[r] = R;
             r++;
             kmax = k;

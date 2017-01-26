@@ -4,16 +4,16 @@ LFLAGS = -lm -o
 all: built run clean plot
 
 built: main.o
-	gcc main.o $(LFLAGS) main.out
+	@gcc main.o $(LFLAGS) main.out
 
 main.o: main.c
-	gcc $(CFLAGS) main.c
+	@gcc $(CFLAGS) main.c
 
 run:
-	./main.out
+	@./main.out
 
 plot:
-	gnuplot "plot.gnu"
+	@gnuplot "plot.gnu"
 
 clean:
-	rm -rf *.out *.o
+	@rm -rf *.out *.o
