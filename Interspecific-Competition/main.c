@@ -1,22 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define ALPHA_1 0.002
-#define ALPHA_2 0.001
+#define ALPHA_1     0.002
+#define ALPHA_2     0.001
 
-#define BETTA_1 0.004
-#define BETTA_2 0.001
+#define BETTA_1     0.004
+#define BETTA_2     0.001
 
-#define GAMMA_1 0.5
-#define GAMMA_2 0.5
+#define GAMMA_1     0.5
+#define GAMMA_2     0.5
 
-#define Y0 200.0
-#define Z0 200.0 //30.0
+#define Y0          150.0
+#define Z0          200.0
 
-#define X_BEG 0.0
-#define X_END 100.0
-#define XDOTS_NUM 1000
-#define DX (X_END - X_BEG) / (XDOTS_NUM - 1)
+#define X_BEG       0.0
+#define X_END       100.0
+#define XDOTS_NUM   1000
+#define DX          ((X_END - X_BEG) / (XDOTS_NUM - 1))
 
 double f1(double, double, double);
 double f2(double, double, double);
@@ -26,7 +26,7 @@ int write1(double*, double*, char*);
 
 int main()
 {
-    int i, j, k;
+    int i, k;
     char buf[20];
 
     double Y[XDOTS_NUM];
@@ -42,58 +42,59 @@ int main()
     LineX2[0] = GAMMA_1 / BETTA_1;  LineY2[0] = 0;
     LineX2[1] = 0;                  LineY2[1] = GAMMA_1 / ALPHA_2;
 
+    printf("\n----------------Interspecific Competition----------------\n");
+
     printf("X:\nGAMMA_2 / ALPHA_1: %f\nGAMMA_1 / BETTA_1: %f\n", GAMMA_2 / ALPHA_1, GAMMA_1 / BETTA_1);
     printf("\nY:\nGAMMA_2 / BETTA_2: %f\nGAMMA_1 / ALPHA_2: %f\n", GAMMA_2 / BETTA_2, GAMMA_1 / ALPHA_2);
 
+    printf("\n---------------------------------------------------------\n");
+
     RK(Y, Z, Y0, Z0, f1, f2);
 
-    write(Y, Z, "data");
     write1(LineX1, LineY1, "line1");
     write1(LineX2, LineY2, "line2");
 
-    // for(i = Y0, k = 0; i < 300; i++, k++)
-    // {
-    //     sprintf(buf, "1_%d", k);
-    //     RK(Y, Z, i, Z0, f1, f2);
-    //     write(Y, Z, buf);
-    // }
-    //
-    // for(i = Y0, k = 0; i > 0; i--, k++)
-    // {
-    //     sprintf(buf, "2_%d", k);
-    //     RK(Y, Z, i, Z0, f1, f2);
-    //     write(Y, Z, buf);
-    // }
-    //
-    // for(i = Y0, k = 0; i < 300; i++, k++)
-    // {
-    //     sprintf(buf, "3_%d", k);
-    //     RK(Y, Z, Y0, i, f1, f2);
-    //     write(Y, Z, buf);
-    // }
-    //
-    // for(i = Y0, k = 0; i > 0; i--, k++)
-    // {
-    //     sprintf(buf, "4_%d", k);
-    //     RK(Y, Z, Y0, i, f1, f2);
-    //     write(Y, Z, buf);
-    // }
-    //
-    // for(i = Y0, k = 0; i < 300; i++, k++)
-    // {
-    //     sprintf(buf, "5_%d", k);
-    //     RK(Y, Z, i, i, f1, f2);
-    //     write(Y, Z, buf);
-    // }
-    //
-    // for(i = Y0, k = 0; i > 0; i--, k++)
-    // {
-    //     sprintf(buf, "6_%d", k);
-    //     RK(Y, Z, i, i, f1, f2);
-    //     write(Y, Z, buf);
-    // }
-    //
-    // printf("Num of files: %d\n", 6 * k);
+    for(i = Y0, k = 0; i < 300; i++, k++)
+    {
+        sprintf(buf, "1_%d", k);
+        RK(Y, Z, i, Z0, f1, f2);
+        write(Y, Z, buf);
+    }
+
+    for(i = Y0, k = 0; i > 0; i--, k++)
+    {
+        sprintf(buf, "2_%d", k);
+        RK(Y, Z, i, Z0, f1, f2);
+        write(Y, Z, buf);
+    }
+
+    for(i = Y0, k = 0; i < 300; i++, k++)
+    {
+        sprintf(buf, "3_%d", k);
+        RK(Y, Z, Y0, i, f1, f2);
+        write(Y, Z, buf);
+    }
+
+    for(i = Y0, k = 0; i > 0; i--, k++)
+    {
+        sprintf(buf, "4_%d", k);
+        RK(Y, Z, Y0, i, f1, f2);
+        write(Y, Z, buf);
+    }
+
+    for(i = Y0, k = 0; i < 300; i++, k++)
+    {
+        sprintf(buf, "5_%d", k);
+        RK(Y, Z, i, i, f1, f2);
+        write(Y, Z, buf);
+    }
+
+    for(i = Y0, k = 0; i > 0; i--, k++)
+    {
+        sprintf(buf, "6_%d", k);
+        RK(Y, Z, i, i, f1, f2);
+        write(Y, Z, buf);
+    }
 
     return 0;
 }
@@ -165,8 +166,6 @@ int write(double *m1, double *m2, char *str)
     "# XDOTS_NUM %d\n"
     "# DX %.3f\n",
     ALPHA_1, ALPHA_2, BETTA_1, BETTA_2, GAMMA_1, GAMMA_2, m1[0], m2[0], X_BEG, X_END, XDOTS_NUM, DX);
-
-    //printf("Filing \"%s\"...\n", filename);
 
     for(i = 0; i < XDOTS_NUM; i++)
         fprintf(out, "%7.3f %7.3f %7.3f\n", X_BEG + DX * i, m1[i], m2[i]);
