@@ -6,8 +6,8 @@ set term gif \
     background "white" \
     crop \
     font "Times-Roman,16"
-set xrange [7 : 8]
-set yrange [7 : 8]
+set xrange [0 : 25]
+set yrange [-10 : 30]
 set xzeroaxis
 set style data lines
 set grid

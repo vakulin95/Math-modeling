@@ -2,24 +2,24 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define R 0.75                 //1.0
-#define K 20.0                  //300.0
-#define OMEGA 0.75              //1.0
-#define D 5.0                 //22500.0
+#define R           0.75
+#define K           20.0
+#define OMEGA       0.75
+#define D           5.0
 
-#define S 0.097              //1.0
-#define J 0.96                  //0.9
+#define S           0.097
+#define J           0.96
 
-#define Y0 1.0                //150.0
-#define Z0 1.0                 //150.0
+#define Y0          1.0
+#define Z0          1.0
 
-#define X_BEG 0.0
-#define X_END 100.0
-#define XDOTS_NUM 1000
-#define DX (X_END - X_BEG) / (XDOTS_NUM - 1)
+#define X_BEG       0.0
+#define X_END       100.0
+#define XDOTS_NUM   1000
+#define DX          (X_END - X_BEG) / (XDOTS_NUM - 1)
 
-#define NFILES 300.0
-#define END_VAL 25.0
+#define NFILES      300.0
+#define END_VAL     25.0
 
 double f1(double, double, double);
 double f2(double, double, double);
@@ -85,8 +85,7 @@ void RK(double *y, double *z, double y0, double z0, double(*f1)(double, double, 
 	{
 		k1 = DX * f1(x, y[i - 1], z[i - 1]);
 		l1 = DX * f2(x, y[i - 1], z[i - 1]);
-//if(i == 1)
-//printf("%lf %lf\n", f1(x, y[i - 1], z[i - 1]), f2(x, y[i - 1], z[i - 1]));
+
 		k2 = DX * f1(x + DX / 2, y[i - 1] + k1 / 2, z[i - 1] + l1 / 2);
 		l2 = DX * f2(x + DX / 2, y[i - 1] + k1 / 2, z[i - 1] + l1 / 2);
 
