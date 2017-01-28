@@ -5,7 +5,7 @@
 #include <gsl/gsl_odeiv2.h>
 
 #define TETA_PROP   (10.0)
-#define R_PROP      (0.1)
+#define R_PROP      (28.0)
 #define B_PROP      (8.0 / 3.0)
 
 #define STEP        (1e-10)

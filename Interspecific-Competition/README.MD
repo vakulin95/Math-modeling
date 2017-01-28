@@ -17,7 +17,7 @@ The impacts of interspecific competition on populations have been formalized in 
 
 An equivalent formulation of these models is:
 
-![Equation1](https://mega.nz/#!M48jTDza!1tVyBbyzkdD9zzUdamWkklTjhWUcRwdPAD54pyR_ILM)
+![Equation1](https://vk.com/im?sel=205302014&z=photo20124574_456239141%2Fmail347323)
 
 * N - population size variable;
 * r - increment rate coefficient;
