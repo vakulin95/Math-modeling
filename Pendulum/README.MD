@@ -50,4 +50,16 @@ This defines can be used to control some plotting settings.
 
 ## Result
 
-![Animation](https://github.com/vakulin95/Math-modeling/blob/master/Pendulum/files/MM_phase.pdf)
+![.png1](https://github.com/vakulin95/Math-modeling/blob/master/Pendulum/files/exact_1.png)
+
+![.png2](https://github.com/vakulin95/Math-modeling/blob/master/Pendulum/files/exact_2.png)
+
+![.png3](https://github.com/vakulin95/Math-modeling/blob/master/Pendulum/files/stable_1.png)
+
+![.png4](https://github.com/vakulin95/Math-modeling/blob/master/Pendulum/files/stable_2.png)
+
+![.png5](https://github.com/vakulin95/Math-modeling/blob/master/Pendulum/files/unstable_1.png)
+
+![.png6](https://github.com/vakulin95/Math-modeling/blob/master/Pendulum/files/unstable_2.png)
+
+![.png7](https://github.com/vakulin95/Math-modeling/blob/master/Pendulum/files/phase.png)
