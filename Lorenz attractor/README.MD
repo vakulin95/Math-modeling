@@ -6,14 +6,18 @@ The Lorenz system is a system of ordinary differential equations first studied b
 
 In 1963, Edward Lorenz developed a simplified mathematical model for atmospheric convection. The model is a system of three ordinary differential equations now known as the Lorenz equations:
 
-![Eq](https://vk.com/im?peers=201981150&sel=205302014&z=photo20124574_456239144%2Fmail347330)
+![Eq](https://wikimedia.org/api/rest_v1/media/math/render/svg/5f993e17e16f1c3ea4ad7031353c61164a226bb8)
 
 ## Progect using
 
-In this progect was used GSL library. To install the library package, open a Terminal and type: `sudo apt-get install libgsl0ldbl`
+In this progect was used GSL library. To install the library package, open a Terminal and type:
+
+`sudo apt-get install libgsl0ldbl`
 
 * Run `make` to launch the project
 * Run `make plot` to plot result without launching the program
+
+Change defines in `main.c` file which are listed below, to control some settings of progect.
 
 ### Сoefficients from equation:
 
@@ -22,6 +26,8 @@ In this progect was used GSL library. To install the library package, open a Ter
 #define R_PROP      (28.0)
 #define B_PROP      (8.0 / 3.0)
 ```
+Here R_PROP reflects ![](https://wikimedia.org/api/rest_v1/media/math/render/svg/1f7d439671d1289b6a816e6af7a304be40608d64) condition of equation system above.
+
 
 ### Initial conditions:
 
@@ -41,4 +47,4 @@ In this progect was used GSL library. To install the library package, open a Ter
 
 ## Result
 
-![Animation](https://github.com/vakulin95/Math-modeling/blob/master/Interspecific-Competition/files/animate_phase_out.gif)
+![Animation](https://github.com/vakulin95/Math-modeling/blob/master/Lorenz%20attractor/files/pl_out.png)

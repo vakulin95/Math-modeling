@@ -12,6 +12,8 @@ Consider the following simple dynamics:
 * Run `make` to launch the project
 * Run `make plot` to plot result without launching the program
 
+Change defines in `main.c` file which are listed below, to control some settings of progect.
+
 ### Model settings:
 
 ```C

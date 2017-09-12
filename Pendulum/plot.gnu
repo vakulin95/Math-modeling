@@ -7,17 +7,17 @@ set mytics
 set style data lines
 set key outside bottom right box
 
-plot_ex = "output_exact1.txt"
-plot_exf = "output_exact0.txt"
-plot_st = "output_stable.txt"
-plot_ust = "output_unstable1.txt"
-plot_ustf = "output_unstable0.txt"
+plot_ex = "files/output_exact1.dat"
+plot_exf = "files/output_exact0.dat"
+plot_st = "files/output_stable.dat"
+plot_ust = "files/output_unstable1.dat"
+plot_ustf = "files/output_unstable0.dat"
 
 title1 = "{/Symbol f}(t)"
 title2 = "d{/Symbol f}(t)"
 title3 = "d{/Symbol f}({/Symbol f})"
 
-set output "MM_ex.pdf"
+set output "files/MM_ex.pdf"
 
 	set title "Точное решение"
 	set xlabel "t"
@@ -29,7 +29,7 @@ set output "MM_ex.pdf"
 
 unset out
 
-set output "MM_st.pdf"
+set output "files/MM_st.pdf"
 
 	set title "Случай устойчивого равновесия"
 	set xlabel "t"
@@ -41,7 +41,7 @@ set output "MM_st.pdf"
 
 unset out
 
-set output "MM_ust.pdf"
+set output "files/MM_ust.pdf"
 
 	set title "Случай неустойчивого равновесия"
 	set xlabel "t"
@@ -55,7 +55,7 @@ unset out
 
 set xrange [-10:10]
 set yrange [-10:10]
-set output "MM_phase.pdf"
+set output "files/MM_phase.pdf"
 
 	set title "Фазовый портрет"
 	set xlabel "{/Symbol f}"

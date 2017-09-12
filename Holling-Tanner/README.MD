@@ -17,6 +17,8 @@ predators leads to the appearance of the term in the equation OMEGA \* x1 \* X2 
 * Run `make` to launch the project
 * Run `make plot` to plot result without launching the program
 
+Change defines in `main.c` file which are listed below, to control some settings of progect.
+
 ### Сoefficients from equation:
 
 ```C
