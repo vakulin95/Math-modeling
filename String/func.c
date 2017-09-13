@@ -1,4 +1,4 @@
-#include "func.h"
+#include "meta.h"
 
 double phi(double x)
 {

@@ -20,12 +20,12 @@ set title "Малые поперечные колебания струны с з
 set xlabel "x"
 set ylabel "u(x, t)"
 
-plot_cont = "files/cont_out.txt"
-plot_discr = "files/discr_out.txt"
+plot_cont = "files/cont_out.dat"
+plot_discr = "files/discr_out.dat"
 title_cont = "Решение непрерывной модели"
 title_discr = "Решение дискретной модели"
 
-set output "files/animate_out.gif"
+set output "files/out.gif"
 
 do for [i = 0:999]{
     plot plot_cont u 1:i title title_cont lc rgb "red" , plot_discr u 1:i title title_discr lc rgb "blue"
